@@ -1,27 +1,16 @@
 package main
 
 import (
-	"SearchTable/config"
 	"SearchTable/internal/infra/db"
 	"SearchTable/internal/interface/http/handler"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/mysql" //MySQL dialect
-	"log"
+	_ "gitlab.iglooinsure.com/axinan/backend/common/gip_platform_pkg/pkg/config"
+	_ "log"
 )
 
 func main() {
-	cfgFile := "././deployment/config.yml"         //相对于当前执行程序main.go文件的目录的路径
-	cfg, err := config.LoadConfigWithFile(cfgFile) // 加载配置文件
-	if err != nil {
-		log.Fatalf("Failed to load config: %v", err)
-	}
-
-	err = cfg.Init() // 初始化配置
-	if err != nil {
-		log.Fatalf("Failed to initialize config: %v", err)
-		return
-	}
 
 	r := gin.Default()
 

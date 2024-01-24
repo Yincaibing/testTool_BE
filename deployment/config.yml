@@ -1,0 +1,61 @@
+AppConfig:
+  Name: new-executor
+  Address: :8080
+  Env: dev
+
+Mysql:
+  Dsn: new_executor_qa:Pp8xCfeZ1fjVHDBG1JHeZYi2@tcp(rds.nonprod.iglooinsure.com:3306)/new_executor_qa?parseTime=true
+  MaxIdle: 3
+  MaxOpen: 3
+  Name:
+  Debug: false
+GRpcService:
+  adminAccountV2Address:
+    address: admin-account.dev.svc.cluster.local:9000
+  beatAddress:
+    address: beat.dev.svc.cluster.local:8080
+  customerAccountOTPAddress:
+    address: customer-account.dev.svc.cluster.local:9000
+  searchAddress:
+    address: gip-search.dev.svc.cluster.local:9090
+  notificationAddress:
+    address: notification.dev.svc.cluster.local:9000
+AxService:
+  file_server:
+    address: http://fileapi.dev.svc.cluster.local:10113/v1
+  short_link:
+    address: http://short-link.dev.svc.cluster.local:8000
+  html2pdf:
+    type: rest
+    address: http://pdf-service.dev.svc.cluster.local:80
+Redis:
+  Name: myRedis
+  Config:
+    host: 127.0.0.1
+    port: 6379
+    db: 0
+    maxIdle: 5
+    maxActive: 10
+    connTimeout: 5
+    readTimeout: 2
+    writeTimeout: 2
+    isHystrixEnabled: true
+DistributedLock:
+  redis:
+    addr: 127.0.0.1
+    password:
+    db: 1
+TraceConfig:
+  reportAddr: jaeger-agent.dev.svc.cluster.local:6831
+  serviceName: new-executor.new-executor-dev
+#Publisher:
+#  addr: ["kafka1.nonprod.iglooinsure.com:9092","kafka2.nonprod.iglooinsure.com:9092","kafka3.nonprod.iglooinsure.com:9092"]
+#  env: "dev"
+Host: http://new-executor.new-executor-dev.svc.cluster.local:8080
+PolicyExpire: "http://new-executor.new-executor-dev.svc.cluster.local:8080/v1/internal/policies/%d/expire"
+PolicyProtect: "http://new-executor.new-executor-dev.svc.cluster.local:8080/v1/internal/policies/%d/protect"
+QuotationExpire: "http://new-executor.new-executor-dev.svc.cluster.local:8080/v1/internal/quotations/%d/expire"
+PromotionConfig:
+  host: "http://promotions.promotions-dev.svc.cluster.local:8080"
+  service: "turbo"
+Events:  <none>
