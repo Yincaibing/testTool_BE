@@ -22,6 +22,7 @@ func main() {
 	db.Init() // 你的数据库连接函数
 	DB := db.GetDB()
 	// 初始化Handler
+	quotationHandler := handler.NewQuotationHandler(DB)
 	applicationHandler := handler.NewApplicationHandler(DB)
 	transaction_handler := handler.NewTransactionHandler(DB)
 	policyHandler := handler.NewPolicyHandler(DB)
@@ -31,6 +32,8 @@ func main() {
 	allTablesHandler := handler.NewAllTablesHandler(DB)
 
 	// 挂载路由
+
+	r.GET("/quotation/:any_id", quotationHandler.HandleGetQuotation())
 	r.GET("/application/:any_id", applicationHandler.HandleGetApplication())
 	r.GET("/transaction/:any_id", transaction_handler.HandleGetTransaction())
 	r.GET("/policy/:any_id", policyHandler.HandleGetPolicy())

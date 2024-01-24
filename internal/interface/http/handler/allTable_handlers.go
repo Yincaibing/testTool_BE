@@ -31,6 +31,12 @@ func (h *AllTablesHandler) HandleGetAllTables() gin.HandlerFunc {
 			return
 		}
 
+		quotation, err := domain.GetQuotationByAnyID(h.db, anyId)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
 		claim, err := domain.GetClaimByAnyId(h.db, anyId)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -58,7 +64,7 @@ func (h *AllTablesHandler) HandleGetAllTables() gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		var isCollapsePolicy, isCollapseClaim, isCollapseReimburse, isCollapseTransaction, isCollapseApplication, isCollapseEngineFlowProcess bool
+		var isCollapsePolicy, isCollapseClaim, isCollapseReimburse, isCollapseTransaction, isCollapseApplication, isCollapseQuotation, isCollapseEngineFlowProcess bool
 		if policy == nil { // 这里你需要根据实际数据模型调整来判断数据是否为空
 			isCollapsePolicy = true
 		}
@@ -79,11 +85,20 @@ func (h *AllTablesHandler) HandleGetAllTables() gin.HandlerFunc {
 			isCollapseApplication = true
 		}
 
+		if quotation == nil { // 这里你需要根据实际数据模型调整来判断数据是否为空
+			isCollapseQuotation = true
+		}
+
 		if engine_flow_process == nil { // 这里你需要根据实际数据模型调整来判断数据是否为空
 			isCollapseEngineFlowProcess = true
 		}
 
 		allTables := []domain.AllTables{
+			{
+				Name:       "Quotation",
+				Data:       quotation,
+				IsCollapse: isCollapseQuotation,
+			},
 			{
 				Name:       "Application",
 				Data:       application,
