@@ -7,9 +7,11 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/jinzhu/gorm v1.9.12
 	github.com/shopspring/decimal v1.2.0
+	gitlab.iglooinsure.com/axinan/backend/integpay v1.1.18
 	gitlab.iglooinsure.com/axinan/backend/turbo/common v1.0.27
 	gitlab.iglooinsure.com/axinan/backend/turbo/new-executor v1.1.33
 	gopkg.in/yaml.v2 v2.4.0
+	gorm.io/datatypes v1.0.6
 )
 
 require (
@@ -61,5 +63,6 @@ require (
 	golang.org/x/text v0.13.0 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
+	gorm.io/driver/mysql v1.5.1 // indirect
 	gorm.io/gorm v1.25.2 // indirect
 )
