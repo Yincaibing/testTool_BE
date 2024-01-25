@@ -20,28 +20,46 @@ func main() {
 	r.Use(cors.New(config))
 
 	db.Init() // 你的数据库连接函数
-	DB := db.GetDB()
-	// 初始化Handler
-	quotationHandler := handler.NewQuotationHandler(DB)
-	applicationHandler := handler.NewApplicationHandler(DB)
-	transaction_handler := handler.NewTransactionHandler(DB)
-	policyHandler := handler.NewPolicyHandler(DB)
-	claimHandler := handler.NewClaimHandler(DB)
-	reimburseHandler := handler.NewReimburseHandler(DB)
-	engineFlowProcessHandler := handler.NewEngineFlowProcessHandler(DB)
-	allTablesHandler := handler.NewAllTablesHandler(DB)
+	qaDB, stagingDB := db.GetDB()
+	// 初始化QAHandler
+	QquotationHandler := handler.NewQuotationHandler(qaDB)
+	QapplicationHandler := handler.NewApplicationHandler(qaDB)
+	Qtransaction_handler := handler.NewTransactionHandler(qaDB)
+	QpolicyHandler := handler.NewPolicyHandler(qaDB)
+	QclaimHandler := handler.NewClaimHandler(qaDB)
+	QreimburseHandler := handler.NewReimburseHandler(qaDB)
+	QengineFlowProcessHandler := handler.NewEngineFlowProcessHandler(qaDB)
+	QallTablesHandler := handler.NewAllTablesHandler(qaDB)
 
+	// 初始化StagingHandler
+	SquotationHandler := handler.NewQuotationHandler(stagingDB)
+	SapplicationHandler := handler.NewApplicationHandler(stagingDB)
+	Stransaction_handler := handler.NewTransactionHandler(stagingDB)
+	SpolicyHandler := handler.NewPolicyHandler(stagingDB)
+	SclaimHandler := handler.NewClaimHandler(stagingDB)
+	SreimburseHandler := handler.NewReimburseHandler(stagingDB)
+	SengineFlowProcessHandler := handler.NewEngineFlowProcessHandler(stagingDB)
+	SallTablesHandler := handler.NewAllTablesHandler(stagingDB)
 	// 挂载路由
+	//qa环境的
+	r.GET("/qa/quotation/:any_id", QquotationHandler.HandleGetQuotation())
+	r.GET("/qa/application/:any_id", QapplicationHandler.HandleGetApplication())
+	r.GET("/qa/transaction/:any_id", Qtransaction_handler.HandleGetTransaction())
+	r.GET("/qa/policy/:any_id", QpolicyHandler.HandleGetPolicy())
+	r.GET("/qa/claim/:any_id", QclaimHandler.HandleGetClaim())
+	r.GET("/qa/reimburse/:any_id", QreimburseHandler.HandleGetReimburse())
+	r.GET("/qa/engine_flow_process/:any_id", QengineFlowProcessHandler.HandleGetEngineFlowProcess())
+	r.GET("/qa/search/:any_id", QallTablesHandler.HandleGetAllTables())
 
-	r.GET("/quotation/:any_id", quotationHandler.HandleGetQuotation())
-	r.GET("/application/:any_id", applicationHandler.HandleGetApplication())
-	r.GET("/transaction/:any_id", transaction_handler.HandleGetTransaction())
-	r.GET("/policy/:any_id", policyHandler.HandleGetPolicy())
-	r.GET("/claim/:any_id", claimHandler.HandleGetClaim())
-	r.GET("/reimburse/:any_id", reimburseHandler.HandleGetReimburse())
-	r.GET("/engine_flow_process/:any_id", engineFlowProcessHandler.HandleGetEngineFlowProcess())
-
-	r.GET("/search/:any_id", allTablesHandler.HandleGetAllTables())
+	// staging环境的
+	r.GET("/staging/quotation/:any_id", SquotationHandler.HandleGetQuotation())
+	r.GET("/staging/application/:any_id", SapplicationHandler.HandleGetApplication())
+	r.GET("/staging/transaction/:any_id", Stransaction_handler.HandleGetTransaction())
+	r.GET("/staging/policy/:any_id", SpolicyHandler.HandleGetPolicy())
+	r.GET("/staging/claim/:any_id", SclaimHandler.HandleGetClaim())
+	r.GET("/staging/reimburse/:any_id", SreimburseHandler.HandleGetReimburse())
+	r.GET("/staging/engine_flow_process/:any_id", SengineFlowProcessHandler.HandleGetEngineFlowProcess())
+	r.GET("/staging/search/:any_id", SallTablesHandler.HandleGetAllTables())
 
 	r.Run() // listen and serve on 0.0.0.0:8080
 
